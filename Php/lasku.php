@@ -83,14 +83,26 @@ $tarvike_summa = 0;
 $tarvike_alv = 0;
 $tarvike_rivit = [];
 
-while ($row = pg_fetch_assoc($res2)) {
-    $sum = $row['myyntihinta'] * $row['maara'] * (1 - $row['alennus']/100);
-    $alv = $sum * $row['alv'];
+while ($r = pg_fetch_assoc($res2)) {
 
-    $tarvike_summa += $sum;
+    $yht = $r['myyntihinta'] * $r['maara'];
+
+    $netto = $yht / (1 + $r['alv']);
+    $netto = $netto * (1 - $r['alennus'] / 100);
+
+    $alv = $netto * $r['alv'];
+    $yht2 = $netto + $alv;
+
+    $tarvike_rivit[] = [
+        $r['nimi'],
+        $r['maara'],
+        $netto,
+        $alv,
+        $yht2
+    ];
+
+    $tarvike_summa += $netto;
     $tarvike_alv += $alv;
-
-    $tarvike_rivit[] = [$row['nimi'], $row['maara'], $sum, $alv];
 }
 
 $netto = $tyo_summa + $tarvike_summa;
@@ -139,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tallenna_lasku'])) {
 
 <h2>Työt</h2>
 <table border="1">
-<tr><th>Tyyppi</th><th>Määrä</th><th>Summa</th><th>ALV</th><th>Yht.</th></tr>
+<tr><th>Tyyppi</th><th>Määrä</th><th>Veroton hinta</th><th>ALV</th><th>Yht.</th></tr>
 <?php foreach ($rivit as $r): ?>
 <tr>
 <td><?= $r[0] ?></td>
@@ -153,13 +165,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tallenna_lasku'])) {
 
 <h2>Tarvikkeet</h2>
 <table border="1">
-<tr><th>Nimi</th><th>Määrä</th><th>Summa</th><th>ALV</th></tr>
+<tr><th>Nimi</th><th>Määrä</th><th>Veroton hinta</th><th>ALV</th><th>Yht.</th></tr>
 <?php foreach ($tarvike_rivit as $t): ?>
 <tr>
 <td><?= $t[0] ?></td>
 <td><?= $t[1] ?></td>
 <td><?= round($t[2],2) ?> €</td>
 <td><?= round($t[3],2) ?> €</td>
+<td><?= round($t[4],2) ?> €</td>
 </tr>
 <?php endforeach; ?>
 </table>
