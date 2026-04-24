@@ -1,0 +1,36 @@
+INSERT INTO Asiakas VALUES
+(1, 'Hosunen, Jaska', 'Susimetsä', 'jaska@testi.fi', '0400000001'),
+(2, 'Jokinen, Lissu', 'Nurmitie', 'lissu@testi.fi', '0400000002'),
+(3, 'Näsänen, Masa', 'Masalantie', 'masa@testi.fi', '0400000003');
+
+INSERT INTO Tyo VALUES
+(1, 2, 'Nurmitie', 'tunti'),
+(2, 3, 'Puotonkorpi', 'tunti'),
+(3, 3, 'Masalantie', 'tunti');
+
+INSERT INTO Tuntityo VALUES
+(1, 3, 12, 0, 0.10, 0.0, 0.0),
+(2, 25, 7, 3, 0.20, 0.10, 0.0),
+(3, 3, 12, 0, 0.0, 0.0, 0.0);
+
+INSERT INTO Tarvike VALUES
+(1, 'USB-kaapeli', 'Generic', 'How-data', 4, 5, 'kpl', 100, 0.24),
+(2, 'sahkojohto', 'Generic', 'Moponet', 1, 1.25, 'metri', 500, 0.24),
+(3, 'opaskirja', 'Generic', 'Tärsky Pub', 8, 10, 'kpl', 50, 0.10),
+(4, 'pistorasia', 'Generic', 'Moponet', 10, 12.5, 'kpl', 100, 0.24),
+(5, 'maakaapeli', 'Generic', 'Moponet', 4, 5, 'metri', 1000, 0.24),
+(6, 'sahkokeskus', 'Generic', 'Junk Co', 300, 375, 'kpl', 10, 0.24),
+(7, 'palohälytin', 'Generic', 'Junk Co', 4, 5, 'kpl', 100, 0.24);
+
+-- Work 1
+INSERT INTO Tyotarvike VALUES (2, 1, 0.10, 3);
+INSERT INTO Tyotarvike VALUES (3, 1, 0, 1);
+INSERT INTO Tyotarvike VALUES (4, 1, 0.20, 1);
+
+-- Work 2
+INSERT INTO Tyotarvike VALUES (5, 2, 0.10, 100);
+INSERT INTO Tyotarvike VALUES (6, 2, 0.05, 1);
+
+-- Work 3
+INSERT INTO Tyotarvike VALUES (2, 3, 0, 3);
+INSERT INTO Tyotarvike VALUES (4, 3, 0, 1);

@@ -1,0 +1,66 @@
+CREATE TABLE Asiakas (
+    asiakas_id INT PRIMARY KEY,
+    nimi VARCHAR(255) NOT NULL,
+    osoite VARCHAR(255) NOT NULL,
+    sahkoposti VARCHAR(255) NOT NULL,
+    puhelin VARCHAR(255) NOT NULL
+);
+
+CREATE TYPE laskutustyyppi AS ENUM ('urakka', 'tunti');
+
+CREATE TABLE Tyo (
+    tyo_id INT PRIMARY KEY,
+    asiakas_id INT REFERENCES Asiakas NOT NULL,
+    osoite varchar(255) NOT NULL,
+    tyyppi laskutustyyppi NOT NULL
+);
+
+CREATE TYPE laskutyyppi AS ENUM ('lasku', 'muistutus', 'karhu');
+
+CREATE TABLE Lasku (
+    lasku_id INT PRIMARY KEY,
+    tyo_id INT REFERENCES Tyo NOT NULL,
+    paivamaara DATE NOT NULL,
+    erapaiva DATE NOT NULL,
+    maksupaiva DATE,
+    maksettu BOOLEAN NOT NULL,
+    mennyt_muistutus_karhu BOOLEAN NOT NULL,
+    tyyppi laskutyyppi NOT NULL,
+    vanha_lasku_id INT REFERENCES lasku(lasku_id)
+);
+
+CREATE TABLE Tuntityo (
+    tyo_id INT PRIMARY KEY REFERENCES Tyo,
+    suunnittelutunnit INT NOT NULL,
+    tyotunnit INT NOT NULL,
+    aputunnit INT NOT NULL,
+    suunnittelu_ale FLOAT NOT NULL,
+    tyo_ale FLOAT NOT NULL,
+    apu_ale FLOAT NOT NULL
+);
+
+CREATE TABLE Urakkatyo (
+    tyo_id INT PRIMARY KEY REFERENCES Tyo,
+    kokonaishinta FLOAT NOT NULL,
+    alennus FLOAT NOT NULL
+);
+
+CREATE TABLE Tarvike (
+    tarvike_id INT PRIMARY KEY,
+    nimi VARCHAR(255) NOT NULL,
+    merkki VARCHAR(255) NOT NULL,
+    toimittaja VARCHAR(255) NOT NULL,
+    sisaanostohinta FLOAT NOT NULL,
+    myyntihinta FLOAT NOT NULL,
+    yksikko VARCHAR NOT NULL,
+    varastotilanne INT NOT NULL,
+    alv FLOAT NOT NULL
+);
+
+CREATE TABLE Tyotarvike (
+  tarvike_id INT REFERENCES Tarvike,
+  tyo_id INT REFERENCES Tyo,
+  alennus FLOAT NOT NULL,
+  maara INT NOT NULL,
+  PRIMARY KEY (tarvike_id, tyo_id)
+);
