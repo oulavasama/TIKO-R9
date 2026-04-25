@@ -127,7 +127,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tallenna_lasku'])) {
             tyyppi,
             vanha_lasku_id
         )
-        VALUES ($1,$2,$3,$4,NULL,false,false,'lasku',NULL)",
+        VALUES ($1,$2,$3,$4,NULL,false,false,'tunti',NULL)",
         [
             $new_id,
             $tyo_id,
